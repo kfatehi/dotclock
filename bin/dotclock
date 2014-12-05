@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+var fs = require('fs')
+var path = require('path')
+var clockDir = path.join(process.cwd(), '.clock')
+var cmd = process.argv[2] || 'status';
+var clockDirExists = fs.existsSync(clockDir)
+
+if (!clockDirExists && cmd !== 'in') {
+  console.error('No .clock directory exists in current directory. `dotclock in` to create it and clock in at the same time.')
+  process.exit(0);
+}
+
+if (cmd === 'in') {
+  if (clockDirExists) {
+    clockIn()
+  } else {
+    createDatabase()
+    clockIn()
+  }
+} else if (cmd === 'out') {
+  clockOut()
+} else {
+  printStatus()
+}
+
+function createDatabase() {
+  console.log('Creating', clockDir);
+  fs.mkdirSync(clockDir);
+}
+
+function clockIn() {
+  console.log('Clocking in');
+  // check if file username
+  // if so, parse that json into mem
+  // if not, create new struct in mem
+  // set clocked in to true
+  // write back file as json
+}
+
+function clockOut() {
+  console.log('Clocking out');
+  // check if file username
+  // if not, throw error saying you never clocked in
+  // if so, parse that json into mem
+  // set clocked in to false
+  // add line item with start, end, hours
+  // write back file as json
+}
+
+function printStatus() {
+  console.log('Status');
+  // check if file username
+  // if not, throw error saying you never clocked in
+  // if so, parse that json into mem
+  // print wether or not clocked in
+  // if clocked in, print since when
+}
