@@ -1,10 +1,13 @@
 #!/usr/bin/env node
-
+var dotclock = require('../index')
+var Clock = dotclock.Clock;
 var fs = require('fs')
 var path = require('path')
 var clockDir = path.join(process.cwd(), '.clock')
+var myTimeFile = path.join(clockDir, process.env.USER)
 var cmd = process.argv[2] || 'status';
 var clockDirExists = fs.existsSync(clockDir)
+var myTimeFileExists = fs.existsSync(myTimeFile)
 
 if (!clockDirExists && cmd !== 'in') {
   console.error('No .clock directory exists in current directory. `dotclock in` to create it and clock in at the same time.')
@@ -31,28 +34,42 @@ function createDatabase() {
 
 function clockIn() {
   console.log('Clocking in');
-  // check if file username
-  // if so, parse that json into mem
-  // if not, create new struct in mem
-  // set clocked in to true
-  // write back file as json
+  var clock = new Clock();
+  if (myTimeFileExists) {
+    // parse that json into mem
+    clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
+  } else {
+    // create new struct in mem
+    clock.load({ sessions: [] })
+  }
+  if (clock.isOn()) {
+    // throw if session already open
+    throw new Error("already clocked in. you must first clock `out`");
+  } else {
+    // open a new session
+    clock.openNewSession();
+    // write back file as json
+    clock.persistToPath(myTimeFile)
+  }
 }
 
 function clockOut() {
   console.log('Clocking out');
-  // check if file username
-  // if not, throw error saying you never clocked in
-  // if so, parse that json into mem
-  // set clocked in to false
-  // add line item with start, end, hours
+  if (myTimeFileExists) {
+    // parse that json into mem
+  } else {
+    // throw error saying you never clocked in
+  }
+  // close last session by updating keys "end" and "hours"
   // write back file as json
 }
 
 function printStatus() {
   console.log('Status');
-  // check if file username
-  // if not, throw error saying you never clocked in
-  // if so, parse that json into mem
-  // print wether or not clocked in
-  // if clocked in, print since when
+  if (myTimeFileExists) {
+    // parse that json into mem
+  } else {
+    // throw error saying you never clocked in
+  }
+  // print last session details
 }
