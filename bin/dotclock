@@ -9,9 +9,13 @@ var cmd = process.argv[2] || 'status';
 var clockDirExists = fs.existsSync(clockDir)
 var myTimeFileExists = fs.existsSync(myTimeFile)
 
-if (!clockDirExists && cmd !== 'in') {
-  console.error('No .clock directory exists in current directory. `dotclock in` to create it and clock in at the same time.')
+function die(msg) {
+  console.error(msg)
   process.exit(0);
+}
+
+if (!clockDirExists && cmd !== 'in') {
+  die('No .clock directory exists in current directory. `dotclock in` to create it and clock in at the same time.')
 }
 
 if (cmd === 'in') {
@@ -33,7 +37,6 @@ function createDatabase() {
 }
 
 function clockIn() {
-  console.log('Clocking in');
   var clock = new Clock();
   if (myTimeFileExists) {
     // parse that json into mem
@@ -44,12 +47,13 @@ function clockIn() {
   }
   if (clock.isOn()) {
     // throw if session already open
-    throw new Error("already clocked in. you must first clock `out`");
+    die("You're already clocked in. You must first clock `out`");
   } else {
     // open a new session
     clock.openNewSession();
     // write back file as json
     clock.persistToPath(myTimeFile)
+    console.log('Clocked in');
   }
 }
 
