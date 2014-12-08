@@ -58,11 +58,13 @@ function clockIn() {
 }
 
 function clockOut() {
-  console.log('Clocking out');
+  var clock = new Clock();
   if (myTimeFileExists) {
     // parse that json into mem
+    clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
   } else {
     // throw error saying you never clocked in
+    die("You have never clocked in")
   }
   // close last session by updating keys "end" and "hours"
   // write back file as json
