@@ -1,11 +1,10 @@
 #!/usr/bin/env node
-var dotclock = require('../index')
-var Clock = dotclock.Clock;
+var cmd = process.argv[2] || 'status';
+var Clock = require('../index').Clock;
 var fs = require('fs')
 var path = require('path')
 var clockDir = path.join(process.cwd(), '.clock')
 var myTimeFile = path.join(clockDir, process.env.USER)
-var cmd = process.argv[2] || 'status';
 var clockDirExists = fs.existsSync(clockDir)
 var myTimeFileExists = fs.existsSync(myTimeFile)
 
