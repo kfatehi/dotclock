@@ -71,11 +71,20 @@ function clockOut() {
 }
 
 function printStatus() {
-  console.log('Status');
+  var clock = new Clock();
   if (myTimeFileExists) {
     // parse that json into mem
+    clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
+    if (clock.isOn()) {
+      var last = clock.getLastSession()
+      // print session details
+      console.log("Clocked in on", last.formatStartTime("dddd, MMMM Do YYYY, h:mm:ss a"))
+      console.log("You've been clocked in for", last.diff('hours'), 'hours')
+    } else {
+      console.log("Not clocked in")
+    }
   } else {
     // throw error saying you never clocked in
+    console.log("Never clocked in")
   }
-  // print last session details
 }
