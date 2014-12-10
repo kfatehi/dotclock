@@ -27,7 +27,7 @@ if (cmd === 'in') {
 } else if (cmd === 'out') {
   clockOut()
 } else if (cmd === "export") {
-  console.log('ok export')
+  exportSessions()
 } else if (!cmd || cmd === "status") {
   printStatus()
 }
@@ -92,6 +92,20 @@ function printStatus() {
     } else {
       console.log("Not clocked in")
     }
+  } else {
+    // throw error saying you never clocked in
+    console.log("Never clocked in")
+  }
+}
+
+function exportSessions() {
+  var clock = new Clock();
+  if (myTimeFileExists) {
+    // parse that json into mem
+    clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
+    clock.getSessions().forEach(function(session) {
+      console.log(session);
+    })
   } else {
     // throw error saying you never clocked in
     console.log("Never clocked in")
