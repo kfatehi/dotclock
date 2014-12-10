@@ -62,12 +62,20 @@ function clockOut() {
   if (myTimeFileExists) {
     // parse that json into mem
     clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
+    if (clock.isOn()) {
+      var last = clock.getLastSession()
+      // close last session by updating keys "end"
+      last.end();
+      // write back file as json
+      clock.persistToPath(myTimeFile)
+      console.log("You clocked out after", last.diff('hours'), 'hours')
+    } else {
+      console.log("Not clocked in")
+    }
   } else {
     // throw error saying you never clocked in
     die("You have never clocked in")
   }
-  // close last session by updating keys "end" and "hours"
-  // write back file as json
 }
 
 function printStatus() {
