@@ -1,14 +1,17 @@
 {
   "name": "dotclock",
   "version": "1.0.0",
-  "description": "CLI directory-based work timer",
+  "description": "command-line oriented multi-project work timer for one or more people",
   "main": "index.js",
   "bin": {
     "dotclock": "bin/dotclock"
   },
   "scripts": {
-    "dev": "index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keyvanfatehi/dotclock.git"
   },
   "author": "Keyvan Fatehi <keyvanfatehi@gmail.com>",
   "license": "ISC",

@@ -1,7 +1,7 @@
 dotclock
 ---
 
-Simple command-line oriented work timer.
+command-line oriented multi-project work timer for one or more people 
 
 creates, manages, and maintains time entries in json files (your username being the filename) in a special subdirectory `.clock` in any directory in which you `dotclock in`
 
