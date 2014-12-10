@@ -1,15 +1,15 @@
 dotclock
 ---
 
-per-project work timer using git and the cli
+Simple command-line oriented work timer.
 
-creates, manages, and maintains files in a directory ".clock" in any directory in which you wish to manage time.
+creates, manages, and maintains time entries in json files (your username being the filename) in a special subdirectory `.clock` in any directory in which you `dotclock in`
 
 your identity is maintained by whatever output is gained from querying the current user (e.g. process.env.USER)
 
 ## Install
 
-install with `npm -g install dotclock`
+install globally with `npm -g install dotclock`
 
 dotclock provides an executable `dotclock`
 
@@ -23,7 +23,7 @@ running `dotclock` by itself is a shortcut for `dotclock status`
 
 `dotclock out`: clock out
 
-`dotclock report [html|csv|json]`: generate a report. optionally provide a format
+`dotclock export [html|csv|json]`: generate a report. optionally provide a format
 
 ## Gitignore
 
