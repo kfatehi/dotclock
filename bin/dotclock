@@ -102,14 +102,15 @@ function printStatus() {
 function exportSessions() {
   var clock = new Clock();
   if (myTimeFileExists) {
-    // parse that json into mem
     clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
-    console.log('Name\tHours')
+    console.log('Name\tStart Date\tEnd Date\tHours')
     clock.getSessions().forEach(function(session) {
-      console.log(myName+"\t"+session.diff('hours'));
+      var start = session.formatStartTime("L")
+      var end = session.formatEndTime("L")
+      var hours = session.diff('hours')
+      console.log(myName+'\t'+start+'\t'+end+'\t'+hours);
     })
   } else {
-    // throw error saying you never clocked in
     console.log("Never clocked in")
   }
 }
