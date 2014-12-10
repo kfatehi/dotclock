@@ -23,7 +23,7 @@ running `dotclock` by itself is a shortcut for `dotclock status`
 
 `dotclock out`: clock out
 
-`dotclock export [html|csv|json]`: generate a report. optionally provide a format
+`dotclock export`: generate a report
 
 ## Gitignore
 
