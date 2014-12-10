@@ -4,7 +4,8 @@ var Clock = require('../index').Clock;
 var fs = require('fs')
 var path = require('path')
 var clockDir = path.join(process.cwd(), '.clock')
-var myTimeFile = path.join(clockDir, process.env.USER)
+var myName = process.env.USER
+var myTimeFile = path.join(clockDir, myName)
 var clockDirExists = fs.existsSync(clockDir)
 var myTimeFileExists = fs.existsSync(myTimeFile)
 
@@ -103,8 +104,9 @@ function exportSessions() {
   if (myTimeFileExists) {
     // parse that json into mem
     clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
+    console.log('Name\tHours')
     clock.getSessions().forEach(function(session) {
-      console.log(session);
+      console.log(myName+"\t"+session.diff('hours'));
     })
   } else {
     // throw error saying you never clocked in
