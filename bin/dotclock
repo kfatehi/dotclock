@@ -26,7 +26,9 @@ if (cmd === 'in') {
   }
 } else if (cmd === 'out') {
   clockOut()
-} else {
+} else if (cmd === "export") {
+  console.log('ok export')
+} else if (!cmd || cmd === "status") {
   printStatus()
 }
 
