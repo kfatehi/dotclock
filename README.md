@@ -30,6 +30,6 @@ running `dotclock` by itself is a shortcut for `dotclock status`
 You may want to add .clock to your global gitignore. e.g.:
 
 ```
-echo ".clock" >> ~/.gitignore_global
+echo ".clock" > ~/.gitignore_global
 git config --global core.excludesfile ~/.gitignore_global
 ```
