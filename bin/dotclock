@@ -104,17 +104,22 @@ function exportSessions(opts) {
   var clock = new Clock();
   if (myTimeFileExists) {
     clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
-    console.log('Name\tStart Timestamp\tEnd Timestamp\tHours')
+    var fmt = 'llll'
     clock.getSessions().forEach(function(session) {
-      var start = session.formatStartTime("YYYY-MM-DD HH:mm")
-      var end = session.formatEndTime("YYYY-MM-DD HH:mm")
+      var start = session.formatStartTime(fmt)
+      var end = session.formatEndTime(fmt)
       var hours = session.diff('hours')
+      var basics = 'in:\t'+start+'\nout:\t'+end+'\nhours:\t'+hours
       if (opts.git && opts.granular) {
         var commits = session.commits();
-        console.log(myName+'\t'+start+'\t'+end+'\t'+hours+'\n'+commits);
-      } else {
-        console.log(myName+'\t'+start+'\t'+end+'\t'+hours);
-      }
+        var preGit = basics+'\ngit:'
+        if (commits.length)
+          console.log(preGit+'\n'+commits);
+        else
+          console.log(preGit+'\tn/a');
+      } else
+        console.log(basics);
+      console.log();
     })
     if (opts.git && !opts.granular) {
       console.log(clock.commits())
