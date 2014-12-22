@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-var cmd = process.argv[2] || 'status';
+var args = require('minimist')(process.argv)
+var cmd = args._[2] || 'status';
 var Clock = require('../index').Clock;
 var fs = require('fs')
 var path = require('path')
@@ -28,7 +29,7 @@ if (cmd === 'in') {
 } else if (cmd === 'out') {
   clockOut()
 } else if (cmd === "export") {
-  exportSessions()
+  exportSessions({ git: args.git || false })
 } else if (!cmd || cmd === "status") {
   printStatus()
 }
@@ -99,17 +100,20 @@ function printStatus() {
   }
 }
 
-function exportSessions() {
+function exportSessions(opts) {
   var clock = new Clock();
   if (myTimeFileExists) {
     clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
-    console.log('Name\tStart Date\tEnd Date\tHours')
+    console.log('Name\tStart Timestamp\tEnd Timestamp\tHours')
     clock.getSessions().forEach(function(session) {
-      var start = session.formatStartTime("L")
-      var end = session.formatEndTime("L")
+      var start = session.formatStartTime("YYYY-MM-DD HH:mm")
+      var end = session.formatEndTime("YYYY-MM-DD HH:mm")
       var hours = session.diff('hours')
       console.log(myName+'\t'+start+'\t'+end+'\t'+hours);
     })
+    if (opts.git) {
+      console.log(clock.commits())
+    }
   } else {
     console.log("Never clocked in")
   }
