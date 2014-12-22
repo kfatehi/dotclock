@@ -1,7 +1,7 @@
 {
   "name": "dotclock",
-  "version": "1.0.0",
-  "description": "command-line oriented multi-project work timer for one or more people",
+  "version": "1.1.0",
+  "description": "command-line oriented multi-project git-aware work timer for one or more people",
   "main": "index.js",
   "bin": {
     "dotclock": "bin/dotclock"
