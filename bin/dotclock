@@ -29,7 +29,7 @@ if (cmd === 'in') {
 } else if (cmd === 'out') {
   clockOut()
 } else if (cmd === "export") {
-  exportSessions({ git: args.git || false })
+  exportSessions(args)
 } else if (!cmd || cmd === "status") {
   printStatus()
 }
