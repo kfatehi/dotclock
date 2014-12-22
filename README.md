@@ -23,7 +23,11 @@ running `dotclock` by itself is a shortcut for `dotclock status`
 
 `dotclock out`: clock out
 
-`dotclock export`: generate a report
+`dotclock export`: print session details.
+
+`dotclock export --git`: print all sessions without granular commits (see --granular) but then print all commits made since the start of the first session until the end of the last session
+
+`dotclock export --git --granular`: print all sessions and include all commits made during the timespan of each session
 
 ## Gitignore
 
