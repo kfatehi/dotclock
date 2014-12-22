@@ -109,9 +109,14 @@ function exportSessions(opts) {
       var start = session.formatStartTime("YYYY-MM-DD HH:mm")
       var end = session.formatEndTime("YYYY-MM-DD HH:mm")
       var hours = session.diff('hours')
-      console.log(myName+'\t'+start+'\t'+end+'\t'+hours);
+      if (opts.git && opts.granular) {
+        var commits = session.commits();
+        console.log(myName+'\t'+start+'\t'+end+'\t'+hours+'\n'+commits);
+      } else {
+        console.log(myName+'\t'+start+'\t'+end+'\t'+hours);
+      }
     })
-    if (opts.git) {
+    if (opts.git && !opts.granular) {
       console.log(clock.commits())
     }
   } else {
