@@ -20,12 +20,8 @@ if (!clockDirExists && cmd !== 'in') {
 }
 
 if (cmd === 'in') {
-  if (clockDirExists) {
-    clockIn()
-  } else {
-    createDatabase()
-    clockIn()
-  }
+  if (!clockDirExists) createDatabase();
+  clockIn()
 } else if (cmd === 'out') {
   clockOut()
 } else if (cmd === "export") {
