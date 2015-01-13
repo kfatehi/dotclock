@@ -22,6 +22,10 @@ if (!clockDirExists && cmd !== 'in') {
 if (cmd === 'in') {
   if (!clockDirExists) createDatabase();
   clockIn()
+} else if (cmd === 'note') {
+  var note = args._.slice(3, args._.length).join(' ');
+  if (note.length === 0) return console.log("Skipped empty note");
+  addNote(note);
 } else if (cmd === 'out') {
   clockOut()
 } else if (cmd === "export") {
@@ -55,6 +59,23 @@ function clockIn() {
     // write back file as json
     clock.persistToPath(myTimeFile)
     console.log('Clocked in');
+  }
+}
+
+function addNote(note) {
+  var clock = new Clock();
+  if (myTimeFileExists) {
+    clock.load(JSON.parse(fs.readFileSync(myTimeFile)))
+    if (clock.isOn()) {
+      var last = clock.getLastSession()
+      last.addNote(note);
+      clock.persistToPath(myTimeFile)
+      console.log("Note added: "+note);
+    } else {
+      die("Not clocked in")
+    }
+  } else {
+    die("You have never clocked in")
   }
 }
 
@@ -108,6 +129,16 @@ function exportSessions(opts) {
       var end = session.formatEndTime(fmt)
       var hours = session.diff('hours')
       var basics = 'in:\t'+start+'\nout:\t'+end+'\nhours:\t'+hours
+
+      // display notes
+      var notes = session.notes();
+      var preNotes = basics+'\nnotes:';
+      if (notes.length)
+        console.log(preNotes+'\n * '+notes.join('\n * ')+'\n');
+      else
+        console.log(preNotes+'\tn/a');
+
+      // display git commits
       if (opts.git && opts.granular) {
         var commits = session.commits();
         var preGit = basics+'\ngit:'
@@ -117,6 +148,7 @@ function exportSessions(opts) {
           console.log(preGit+'\tn/a');
       } else
         console.log(basics);
+
       console.log();
     })
     if (opts.git && !opts.granular) {
