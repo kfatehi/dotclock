@@ -21,6 +21,8 @@ running `dotclock` by itself is a shortcut for `dotclock status`
 
 `dotclock in`: clock in
 
+`dotclock note`: add a note to the current session
+
 `dotclock out`: clock out
 
 `dotclock export`: print session details.
