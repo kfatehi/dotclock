@@ -128,33 +128,37 @@ function exportSessions(opts) {
       var start = session.formatStartTime(fmt)
       var end = session.formatEndTime(fmt)
       var hours = session.diff('hours')
-      var basics = 'in:\t'+start+'\nout:\t'+end+'\nhours:\t'+hours
+      console.log('in:\t'+start+'\nout:\t'+end+'\nhours:\t'+hours);
 
-      // display notes
-      var notes = session.notes();
-      var preNotes = basics+'\nnotes:';
-      if (notes.length)
-        console.log(preNotes+'\n * '+notes.join('\n * '));
-      else
-        console.log(preNotes+'\tn/a');
-      console.log();
+      printList(session, 'notes');
 
-      // display git commits
+
+      // show each sessions' commits (--git --granular)
       if (opts.git && opts.granular) {
-        var commits = session.commits();
-        var preGit = basics+'\ngit:'
-        if (commits.length)
-          console.log(preGit+'\n'+commits);
-        else
-          console.log(preGit+'\tn/a');
-      } else
-        console.log(basics);
+        printList(session, 'commits');
+      }
+
       console.log();
     })
+
+    // show all commits at the end (--git)
     if (opts.git && !opts.granular) {
-      console.log(clock.commits())
+      printList(clock, 'commits');
     }
   } else {
     console.log("Never clocked in")
   }
 }
+
+function printList(receiver, getter) {
+  var list = receiver[getter]();
+  if (list.length > 0) {
+    console.log(getter+':');
+    list.forEach(function(str) {
+      console.log(' * '+str);
+    });
+  } else { 
+    console.log(getter+': n/a')
+  }
+}
+
