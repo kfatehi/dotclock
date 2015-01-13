@@ -134,9 +134,10 @@ function exportSessions(opts) {
       var notes = session.notes();
       var preNotes = basics+'\nnotes:';
       if (notes.length)
-        console.log(preNotes+'\n * '+notes.join('\n * ')+'\n');
+        console.log(preNotes+'\n * '+notes.join('\n * '));
       else
         console.log(preNotes+'\tn/a');
+      console.log();
 
       // display git commits
       if (opts.git && opts.granular) {
@@ -148,7 +149,6 @@ function exportSessions(opts) {
           console.log(preGit+'\tn/a');
       } else
         console.log(basics);
-
       console.log();
     })
     if (opts.git && !opts.granular) {
