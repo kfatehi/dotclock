@@ -16,7 +16,6 @@
   "author": "Keyvan Fatehi <keyvanfatehi@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "execSync": "^1.0.2",
     "minimist": "^1.1.0",
     "moment": "^2.8.4"
   }
