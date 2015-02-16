@@ -129,37 +129,50 @@ function exportSessions(opts) {
       var start = session.formatStartTime(fmt)
       var end = session.formatEndTime(fmt)
       var hours = session.diff('hours')
-      console.log('in:\t'+start+'\nout:\t'+end+'\nhours:\t'+hours);
-
-      printList(session, 'notes');
-
-
-      // show each sessions' commits (--git --granular)
-      if (opts.git && opts.granular) {
-        printList(session, 'commits');
-      }
-
-      console.log();
-    })
-
-    // show all commits at the end (--git)
-    if (opts.git && !opts.granular) {
-      printList(clock, 'commits');
-    }
+      Promise.all([
+        getList(session, 'notes'),
+        function() {
+          // show each sessions' commits (--git --granular)
+          if (opts.git && opts.granular)
+            return getList(session, 'commits', { async: true });
+          // show all commits at the end (--git)
+          else if (opts.git && !opts.granular)
+            return getList(clock, 'commits', { async: true });
+        }(),
+      ]).then(function(data) {
+        var notes = data[0];
+        var commits = data[1];
+        console.log('in:\t'+start+'\nout:\t'+end+'\nhours:\t'+hours);
+        console.log(notes);
+        console.log(commits);
+      });
+    });
   } else {
     console.log("Never clocked in")
   }
 }
 
-function printList(receiver, getter) {
-  var list = receiver[getter]();
-  if (list.length > 0) {
-    console.log(getter+':');
-    list.forEach(function(str) {
-      console.log(' * '+str);
-    });
-  } else { 
-    console.log(getter+': n/a')
-  }
+function getList(receiver, getter, opts) {
+  return new Promise(function(resolve, reject) {
+    if (opts && opts.async) {
+      return receiver[getter]().then(function(commits) {
+        resolver(commits);
+      }).error(reject).catch(reject);
+    } else {
+      resolver(receiver[getter]())
+    }
+    function resolver(list) {
+      var out = "";
+      if (list.length > 0) {
+        out+=getter+':'+'\n';
+        list.forEach(function(str) {
+          out+=' * '+str+'\n';
+        });
+      } else { 
+        out+=getter+': n/a'+'\n';
+      }
+      resolve(out);
+    }
+  });
 }
 
