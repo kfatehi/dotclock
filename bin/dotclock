@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+var Promise = require('bluebird');
 var args = require('minimist')(process.argv)
 var cmd = args._[2] || 'status';
 var Clock = require('../index').Clock;
