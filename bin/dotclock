@@ -144,7 +144,7 @@ function exportSessions(opts) {
         var commits = data[1];
         console.log('in:\t'+start+'\nout:\t'+end+'\nhours:\t'+hours);
         console.log(notes);
-        console.log(commits);
+        console.log('commits:', commits || 'n/a');
       });
     });
   } else {
