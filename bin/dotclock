@@ -33,6 +33,8 @@ if (cmd === 'in') {
   exportSessions(args)
 } else if (!cmd || cmd === "status") {
   printStatus()
+} else if (cmd === "git") {
+  printDayCommits(args);
 } else {
   console.log(require('../lib/help'));
 }
@@ -176,3 +178,19 @@ function getList(receiver, getter, opts) {
   });
 }
 
+
+
+function printDayCommits(opts) {
+  if (!opts.day) return die("Please pass in --day");
+  var moment = require('moment');
+  var date = new Date(opts.day);
+  var since = moment(date);
+  var until = moment(date).add(1, 'days');
+  require('../lib/git').shortlog({
+    anyAuthor: true,
+    since: since,
+    until: until
+  }).then(function(commits) {
+    console.log(commits.join('\n'));
+  });
+}
